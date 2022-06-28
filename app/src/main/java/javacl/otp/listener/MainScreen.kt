@@ -1,7 +1,6 @@
 package javacl.otp.listener
 
 import android.app.Activity
-import android.content.Intent
 import android.content.IntentFilter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -69,18 +68,9 @@ fun MainScreen() {
 
             if (event == Lifecycle.Event.ON_START) {
 
-                smsBroadcastReceiver = SmsBroadcastReceiver()
-
-                smsBroadcastReceiver?.setSmsBroadcastReceiverListener(
-
-                    object : SmsBroadcastReceiver.SmsBroadcastReceiverListener {
-
-                        override fun onSuccess(intent: Intent?) {
-                            activityResultLauncher.launch(intent)
-                        }
-
-                        override fun onFailure() {}
-                    })
+                smsBroadcastReceiver = SmsBroadcastReceiver {
+                    activityResultLauncher.launch(it)
+                }
 
                 val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
                 context.registerReceiver(smsBroadcastReceiver, intentFilter)
