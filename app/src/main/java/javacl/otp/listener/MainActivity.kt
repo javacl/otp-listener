@@ -48,14 +48,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting() {
-
-    val context = LocalContext.current
-
-    SmsRetriever.getClient(context).startSmsUserConsent(null)
-
-    var smsBroadcastReceiver: SmsBroadcastReceiver? = null
-
     var text by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(Alignment.CenterVertically)
+    ) {
+        OutlinedTextField(
+            value = text,
+            onValueChange = { text = it.filter { filter -> filter.isDigit() } },
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            label = { Text("Otp code") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+    }
 
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -72,19 +78,11 @@ fun Greeting() {
         }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight(Alignment.CenterVertically)
-    ) {
-        OutlinedTextField(
-            value = text,
-            onValueChange = { text = it.filter { filter -> filter.isDigit() } },
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            label = { Text("Otp code") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-    }
+    val context = LocalContext.current
+
+    SmsRetriever.getClient(context).startSmsUserConsent(null)
+
+    var smsBroadcastReceiver: SmsBroadcastReceiver? = null
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
