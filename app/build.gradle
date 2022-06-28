@@ -3,25 +3,43 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+private Integer generateVersionCode() {
+    return project.minimumSdkVersion * 10000000 + project.versionMajor * 10000 + project.versionMinor * 100 + project.versionPatch
+}
+
+private String generateVersionName() {
+    return "${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"
+}
+
+project.ext {
+    versionMajor = 1
+    versionMinor = 0
+    versionPatch = 0
+    minimumSdkVersion = 21
+    compileAndTargetSdkVersion = 32
+    appName = "javacl.otp.listener"
+}
+
 android {
-    compileSdk 32
+    compileSdkVersion project.compileAndTargetSdkVersion
 
     defaultConfig {
-        applicationId "javacl.otp.listener"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
-
+        applicationId project.appName
+        minSdkVersion project.minimumSdkVersion
+        targetSdkVersion project.compileAndTargetSdkVersion
+        versionCode generateVersionCode()
+        versionName generateVersionName()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
+        resConfig "en"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,16 +65,22 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    // Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    implementation "androidx.activity:activity-compose:1.4.0"
+
+    // KTX
+    implementation 'androidx.core:core-ktx:1.8.0'
+
+    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+
+    // Utils
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
