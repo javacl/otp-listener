@@ -108,7 +108,6 @@ fun Greeting() {
                     })
 
                 val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-
                 context.registerReceiver(smsBroadcastReceiver, intentFilter)
 
             } else if (event == Lifecycle.Event.ON_STOP) {
