@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.IntentFilter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -26,14 +26,13 @@ fun MainScreen() {
     var text by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight(Alignment.CenterVertically)
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
             value = text,
             onValueChange = { text = it.filter { filter -> filter.isDigit() } },
-            modifier = Modifier.align(Alignment.CenterHorizontally),
             label = { Text("Otp code") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
